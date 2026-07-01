@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+<title>Додати технологію</title>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Нова технологія</h2>
+    <p class="form-help-text">Ця технологія буде доступна для вибору всім користувачам.</p>
+
+    <form method="post" class="standard-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+                <p class="form-error">{{ form.name.errors|join:", " }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save">Зберегти технологію</button>
+            <a href="{% url 'portfolio:project_add' %}" class="btn-cancel">Скасувати</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+<title>Редагування профілю</title>
+{% endblock %}
+
+{% block content %}
+<div class="profile-edit-page">
+
+    <h2>Редагування профілю</h2>
+
+    <form method="post" enctype="multipart/form-data" class="profile-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            {% if form.instance.avatar %}
+                <img src="{{ form.instance.avatar.url }}" class="avatar avatar-large" alt="Поточний аватар">
+            {% else %}
+                <div class="avatar-placeholder avatar-large">
+                    {{ request.user.username|first|upper }}
+                </div>
+            {% endif %}
+
+            <label for="{{ form.avatar.id_for_label }}">{{ form.avatar.label }}</label>
+            {{ form.avatar }}
+            {% if form.avatar.errors %}
+                <p class="form-error">{{ form.avatar.errors|join:", " }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.bio.id_for_label }}">{{ form.bio.label }}</label>
+            {{ form.bio }}
+            {% if form.bio.errors %}
+                <p class="form-error">{{ form.bio.errors|join:", " }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save">Зберегти</button>
+            <a href="{% url 'portfolio:profile' %}" class="btn-cancel">Скасувати</a>
+        </div>
+    </form>
+
+</div>
+{% endblock %}

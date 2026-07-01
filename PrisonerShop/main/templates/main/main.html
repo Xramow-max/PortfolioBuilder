@@ -1,8 +1,44 @@
-{%extends 'main/base.html' %}
-    {% block title %}
-    <title>Adrian портфоліо</title>
-    {% endblock %}
+{% extends 'main/base.html' %}
+
+{% block title %}
+<title>Головна — My Portfolio</title>
+{% endblock %}
+
 {% block content %}
-    <h1>Привіт, я Адріан!</h1>
-    <p>Це моє портфоліо.</p>
+<div class="home-page">
+
+    <section class="users-list">
+        <h3>Користувачі платформи</h3>
+
+        {% if portfolios %}
+            <div class="users-grid">
+                {% for portfolio in portfolios %}
+                    <a href="{% url 'portfolio:public_profile' portfolio.user.username %}" class="user-card">
+
+                        {% if portfolio.avatar %}
+                            <img src="{{ portfolio.avatar.url }}" class="avatar" alt="{{ portfolio.user.username }}">
+                        {% else %}
+                            <div class="avatar-placeholder">
+                                {{ portfolio.user.username|first|upper }}
+                            </div>
+                        {% endif %}
+
+                        <div class="user-card-info">
+                            <span class="user-card-name">{{ portfolio.user.username }}</span>
+
+                            {% if portfolio.bio %}
+                                <p class="user-card-bio">{{ portfolio.bio|truncatewords:15 }}</p>
+                            {% else %}
+                                <p class="user-card-bio user-card-bio-empty">Профіль ще не заповнено</p>
+                            {% endif %}
+                        </div>
+
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-message">Користувачів поки немає.</p>
+        {% endif %}
+    </section>
+</div>
 {% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+<title>Профіль — {{ portfolio.user.username }}</title>
+{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+
+    <section class="profile-header">
+
+        {% if portfolio.avatar %}
+            <img src="{{ portfolio.avatar.url }}" class="avatar avatar-large" alt="{{ portfolio.user.username }}">
+        {% else %}
+            <div class="avatar-placeholder avatar-large">
+                {{ portfolio.user.username|first|upper }}
+            </div>
+        {% endif %}
+
+        <div class="profile-info">
+            <h2>{{ portfolio.user.username }}</h2>
+
+            {% if portfolio.bio %}
+                <p class="profile-bio">{{ portfolio.bio }}</p>
+            {% else %}
+                <p class="profile-bio profile-bio-empty">Біографію ще не додано.</p>
+            {% endif %}
+
+            <p class="profile-updated">
+                Оновлено: {{ portfolio.updated_at|date:"d.m.Y H:i" }}
+            </p>
+
+            {% if request.user == portfolio.user %}
+                <a href="{% url 'portfolio:profile_edit' %}" class="btn-edit-profile">
+                    Редагувати профіль
+                </a>
+            {% endif %}
+        </div>
+
+    </section>
+
+    <section class="profile-projects" id="projects">
+        <h3>Проєкти</h3>
+
+        {% if request.user == portfolio.user %}
+            <a href="{% url 'portfolio:project_add' %}" class="btn-add-project">
+                + Додати проєкт
+            </a>
+        {% endif %}
+
+        {% if portfolio.projects.all %}
+            <div class="projects-grid">
+                {% for project in portfolio.projects.all %}
+                    <div class="project-card">
+                        <h4>{{ project.title }}</h4>
+                        <p>{{ project.description }}</p>
+
+                        {% if project.technologies.all %}
+                            <div class="tech-list">
+                                {% for tech in project.technologies.all %}
+                                    <span class="tech-badge">{{ tech.name }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <div class="project-links">
+                            {% if project.project_url %}
+                                <a href="{{ project.project_url }}" target="_blank" class="btn-link">Сайт</a>
+                            {% endif %}
+                            {% if project.github_url %}
+                                <a href="{{ project.github_url }}" target="_blank" class="btn-link">GitHub</a>
+                            {% endif %}
+                            
+                            {% if request.user == portfolio.user %}
+                                <a href="{% url 'portfolio:project_delete' project.pk %}" class="btn-delete" style="margin-left: auto;">Видалити</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Проєктів ще немає.</p>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}

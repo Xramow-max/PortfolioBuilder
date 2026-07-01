@@ -1,0 +1,77 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+<title>Додати проєкт</title>
+{% endblock %}
+
+{% block content %}
+<div class="project-form-page">
+
+    <h2>Новий проєкт</h2>
+
+    <form method="post" class="project-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <p class="form-error">{{ form.title.errors|join:", " }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <p class="form-error">{{ form.description.errors|join:", " }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label>{{ form.technologies.label }}</label>
+            <div class="tech-checkboxes">
+                {{ form.technologies }}
+            </div>
+            {% if form.technologies.errors %}
+                <p class="form-error">{{ form.technologies.errors|join:", " }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.project_url.id_for_label }}">{{ form.project_url.label }}</label>
+            {{ form.project_url }}
+            {% if form.project_url.errors %}
+                <p class="form-error">{{ form.project_url.errors|join:", " }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.github_url.id_for_label }}">{{ form.github_url.label }}</label>
+            {{ form.github_url }}
+            {% if form.github_url.errors %}
+                <p class="form-error">{{ form.github_url.errors|join:", " }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save">Додати проєкт</button>
+            <a href="{% url 'portfolio:profile' %}" class="btn-cancel">Скасувати</a>
+        </div>
+
+        <div class="form-group">
+            <label>{{ form.technologies.label }}</label>
+            <a href="{% url 'portfolio:technology_add' %}" class="link-small" style="display: block; margin-bottom: 10px; color: #007bff; text-decoration: none;">
+                + Додати нову технологію, якщо її немає у списку
+            </a>
+            <div class="tech-checkboxes">
+                {{ form.technologies }}
+            </div>
+            {% if form.technologies.errors %}
+                <p class="form-error">{{ form.technologies.errors|join:", " }}</p>
+            {% endif %}
+        </div>
+    </form>
+
+</div>
+{% endblock %}

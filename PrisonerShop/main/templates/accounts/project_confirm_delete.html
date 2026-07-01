@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+<title>Видалити проєкт</title>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Видалити проєкт?</h2>
+    <p>Ви впевнені, що хочете видалити проєкт <strong>"{{ object.title }}"</strong>?</p>
+    <p class="form-error">Цю дію неможливо скасувати.</p>
+
+    <form method="post" class="standard-form mt-4">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button type="submit" class="btn-danger">Так, видалити</button>
+            <a href="{% url 'portfolio:profile' %}" class="btn-cancel">Скасувати</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
