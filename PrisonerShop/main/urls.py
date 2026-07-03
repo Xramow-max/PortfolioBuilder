@@ -19,3 +19,4 @@ urlpatterns = [
     
     path('technologies/add/', views.TechnologyCreateView.as_view(), name='technology_add'), # Новий шлях
 ]
+

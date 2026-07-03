@@ -8,6 +8,26 @@
 <div class="home-page">
 
     <section class="users-list">
+        <div class="search-container" style="margin-bottom: 30px; max-width: 500px;">
+            <form method="get" action="{% url 'portfolio:home' %}" style="display: flex; gap: 10px;">
+                <input 
+                    type="text" 
+                    name="q" 
+                    class="form-control" 
+                    placeholder="Пошук користувачів за іменем..." 
+                    value="{{ query|default:'' }}"
+                    style="margin-bottom: 0;"
+                >
+                <button type="submit" class="btn-save" style="padding: 10px 20px; white-space: nowrap;">
+                    Шукати
+                </button>
+                {% if query %}
+                    <a href="{% url 'portfolio:home' %}" class="btn-cancel" style="padding: 10px 15px; text-decoration: none; text-align: center;">
+                        Скинути
+                    </a>
+                {% endif %}
+            </form>
+        </div>
         <h3>Користувачі платформи</h3>
 
         {% if portfolios %}

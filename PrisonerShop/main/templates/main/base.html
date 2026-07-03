@@ -5,12 +5,8 @@
 
 <head>
     <meta charset="UTF-8">
-
     <link href="{% static 'css/main.css' %}" rel="stylesheet">
-
-    {% block css %}
-    {% endblock %}
-
+    {% block css %}{% endblock %}
     {% block title %}
     <title>My Portfolio</title>
     {% endblock %}
@@ -25,46 +21,36 @@
             <a href="{% url 'portfolio:home' %}">My Portfolio</a>
         </div>
 
+        <!-- Навігація містить лише загальні посилання -->
         <nav class="nav">
             <a href="{% url 'portfolio:home' %}">Головна</a>
-
-            {% if user.is_authenticated %}
-                <a href="{% url 'portfolio:profile' %}">Про мене</a>
-                <a href="{% url 'portfolio:profile' %}#projects">Проєкти</a>
-            {% else %}
-                <a href="{% url 'portfolio:login' %}">Про мене</a>
-                <a href="{% url 'portfolio:home' %}#projects">Проєкти</a>
-            {% endif %}
-
-            <a href="{% url 'portfolio:home' %}#contacts">Контакти</a>
+                <a href="{% url 'portfolio:profile' %}">Проєкти</a>
         </nav>
 
-        {% if user.is_authenticated %}
-
-            <a href="{% url 'portfolio:profile' %}" class="contact-btn">
-                {% if user.portfolio.avatar %}
-
-                <img
-                    src="{{ user.portfolio.avatar.url }}"
-                    class="avatar"
-                >
-
-                {% else %}
-
-                <div class="avatar-placeholder">
-                    {{ user.username|first|upper }}
+        <!-- Блок аутентифікації чітко відокремлений праворуч -->
+        <div class="header-auth">
+            {% if user.is_authenticated %}
+                <a href="{% url 'portfolio:profile' %}" class="contact-btn" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-weight: 500; color: var(--text-main);">{{ user.username }}</span>
+                    {% if user.portfolio.avatar %}
+                        <img src="{{ user.portfolio.avatar.url }}" class="avatar">
+                    {% else %}
+                        <div class="avatar-placeholder">
+                            {{ user.username|first|upper }}
+                        </div>
+                    {% endif %}
+                </a>
+            {% else %}
+                <div class="auth-buttons" style="display: flex; align-items: center; gap: 15px;">
+                    <a href="{% url 'portfolio:login' %}" style="text-decoration: none; color: var(--text-main); font-weight: 500;">
+                        Увійти
+                    </a>
+                    <a href="{% url 'portfolio:register' %}" class="btn-edit-profile" style="padding: 8px 16px; font-size: 14px;">
+                        Реєстрація
+                    </a>
                 </div>
-
-                {% endif %}
-            </a>
-
-        {% else %}
-
-            <a href="{% url 'portfolio:login' %}" class="contact-btn">
-                Увійти
-            </a>
-
-        {% endif %}
+            {% endif %}
+        </div>
 
     </header>
 </div>

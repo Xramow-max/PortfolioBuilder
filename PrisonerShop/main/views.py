@@ -19,8 +19,21 @@ from django.http import HttpResponse
 
 
 def home(request):
+    # Отримуємо пошуковий запит з URL (наприклад, ?q=admin)
+    query = request.GET.get('q', '').strip()
+    
+    # Початковий запит для всіх портфоліо
     portfolios = Portfolio.objects.select_related('user').all()
-    return render(request, 'main/main.html', {'portfolios': portfolios})
+    
+    # Якщо користувач щось ввів у пошук, фільтруємо за іменем користувача
+    if query:
+        portfolios = portfolios.filter(user__username__icontains=query)
+        
+    context = {
+        'portfolios': portfolios,
+        'query': query,  # Повертаємо запит назад у шаблон, щоб показати його в інпуті
+    }
+    return render(request, 'main/main.html', context)
 
 class CustomLoginView(LoginView):
     template_name = "accounts/login.html"
@@ -28,7 +41,7 @@ class CustomLoginView(LoginView):
 
 
 class CustomLogoutView(LogoutView):
-    next_page = "portfolio:login"
+    next_page = "portfolio:register"
 
 
 

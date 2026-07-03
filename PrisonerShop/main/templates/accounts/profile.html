@@ -7,7 +7,17 @@
 {% block content %}
 <div class="profile-page">
 
-    <section class="profile-header">
+    <section class="profile-header" style="position: relative;">
+        
+        <!-- Якщо це профіль поточного користувача, показуємо кнопку виходу в кутку -->
+        {% if request.user == portfolio.user %}
+            <form action="{% url 'portfolio:logout' %}" method="post" style="position: absolute; top: 20px; right: 20px; margin: 0;">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger" style="padding: 6px 14px; font-size: 14px; border-radius: 6px; cursor: pointer;">
+                    Вийти з профілю
+                </button>
+            </form>
+        {% endif %}
 
         {% if portfolio.avatar %}
             <img src="{{ portfolio.avatar.url }}" class="avatar avatar-large" alt="{{ portfolio.user.username }}">
